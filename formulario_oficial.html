@@ -51,23 +51,6 @@
     opacity: 0; transform: translateX(-30px); z-index: 0;
   }
 
-  /* ── STATUS BAR (decorativo) ── */
-  .status-bar {
-    height: 30px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px;
-    flex-shrink: 0;
-  }
-  .status-time {
-    font-size: 12px; font-weight: 500; color: #4d4d4d;
-  }
-  .status-icons {
-    display: flex; align-items: center; gap: 4px;
-  }
-  .status-icon {
-    font-size: 10px; color: #4d4d4d;
-  }
-
   /* ── NAV BAR (N1/N2) ── */
   .nav-bar {
     height: 56px;
@@ -723,10 +706,6 @@
      SCREEN HOME
 ══════════════════════════════════════ -->
 <div class="screen active" id="screen-home">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons"><span class="status-icon">4G</span><span class="status-icon">🔋</span></div>
-  </div>
   <div class="nav-top">
     <button class="nav-top-menu">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -747,19 +726,19 @@
     <div class="home-slots">
       <div class="home-slot">
         <div class="home-slot-icon">
-          <img src="https://www.figma.com/api/mcp/asset/bcad8208-0431-434b-ba61-2ebadc7af096" alt="" onerror="this.parentElement.innerHTML='🔥'">
+          <img src="assets/foguinho.png" alt="" onerror="this.parentElement.innerHTML='🔥'">
         </div>
         <span class="home-slot-num slot-purple">5</span>
       </div>
       <div class="home-slot">
         <div class="home-slot-icon">
-          <img src="https://www.figma.com/api/mcp/asset/7f336acf-f1a8-4e1f-aa7a-6e86c144626c" alt="" onerror="this.parentElement.innerHTML='💙'">
+          <img src="assets/heart.png" alt="" onerror="this.parentElement.innerHTML='💙'">
         </div>
         <span class="home-slot-num slot-blue">13</span>
       </div>
       <div class="home-slot">
         <div class="home-slot-icon">
-          <img src="https://www.figma.com/api/mcp/asset/94803d21-b1c8-4ccd-9d6f-b3b03d9ae175" alt="" onerror="this.parentElement.innerHTML='🏆'">
+          <img src="assets/trofeu.png" alt="" onerror="this.parentElement.innerHTML='🏆'">
         </div>
         <span class="home-slot-num slot-yellow">3°</span>
       </div>
@@ -820,13 +799,6 @@
      SCREEN N1
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-n1">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons">
-      <span class="status-icon">4G</span>
-      <span class="status-icon">🔋</span>
-    </div>
-  </div>
   <div class="nav-bar">
     <button class="nav-back-btn" onclick="showScreen('screen-home')">
       <svg viewBox="0 0 20 20" fill="none" stroke="#232831" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -848,13 +820,6 @@
      SCREEN N2
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-n2">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons">
-      <span class="status-icon">4G</span>
-      <span class="status-icon">🔋</span>
-    </div>
-  </div>
   <div class="nav-bar">
     <button class="nav-back-btn" onclick="goBack()">
       <svg viewBox="0 0 20 20" fill="none" stroke="#232831" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -884,13 +849,6 @@
      SCREEN FEEDBACK
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-feedback">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons">
-      <span class="status-icon">4G</span>
-      <span class="status-icon">🔋</span>
-    </div>
-  </div>
   <div class="nav-top">
     <button class="nav-top-menu" onclick="restart()">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1179,10 +1137,6 @@ buildN1();
      SCREEN CONQUISTAS
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-conquistas">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons"><span class="status-icon">4G</span><span class="status-icon">🔋</span></div>
-  </div>
   <div class="nav-top">
     <button class="nav-top-menu">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1223,21 +1177,21 @@ buildN1();
     <div class="conq-slots">
       <div class="conq-slot">
         <div class="conq-slot-top">
-          <img class="conq-slot-icon" src="https://www.figma.com/api/mcp/asset/1a79b4a3-a030-4a8b-9390-c955b42e0dea" alt="" onerror="this.outerHTML='🔥'">
+          <img class="conq-slot-icon" src="assets/foguinho.png" alt="" onerror="this.outerHTML='🔥'">
           <span class="conq-slot-num" style="color:#462475">6</span>
         </div>
         <span class="conq-slot-label">semanas seguidas</span>
       </div>
       <div class="conq-slot">
         <div class="conq-slot-top">
-          <img class="conq-slot-icon" src="https://www.figma.com/api/mcp/asset/f4fae767-2ee4-468b-a2e3-a3aa2c5c681b" alt="" onerror="this.outerHTML='💙'">
+          <img class="conq-slot-icon" src="assets/heart.png" alt="" onerror="this.outerHTML='💙'">
           <span class="conq-slot-num" style="color:#0970B0">14</span>
         </div>
         <span class="conq-slot-label">Pulsos</span>
       </div>
       <div class="conq-slot">
         <div class="conq-slot-top">
-          <img class="conq-slot-icon" src="https://www.figma.com/api/mcp/asset/cbb8f2e5-758f-4b6f-899f-1b11bdda971c" alt="" onerror="this.outerHTML='🏆'">
+          <img class="conq-slot-icon" src="assets/trofeu.png" alt="" onerror="this.outerHTML='🏆'">
           <span class="conq-slot-num" style="color:#F7B844">3°</span>
         </div>
         <span class="conq-slot-label">ranking</span>
@@ -1289,18 +1243,18 @@ buildN1();
       </div>
       <!-- Selo 2 — conquistado -->
       <div class="conq-selo">
-        <img class="conq-selo-img" src="https://www.figma.com/api/mcp/asset/1a79b4a3-a030-4a8b-9390-c955b42e0dea" alt="" onerror="this.outerHTML='🔥'">
+        <img class="conq-selo-img" src="assets/fogo.svg" alt="" onerror="this.outerHTML='🔥'">
         <span class="conq-selo-label">4 semanas seguidas</span>
       </div>
       <!-- Selo 3 — bloqueado -->
       <div class="conq-selo locked">
-        <img class="conq-selo-img" src="https://www.figma.com/api/mcp/asset/1a79b4a3-a030-4a8b-9390-c955b42e0dea" alt="" onerror="this.outerHTML='🔥'">
+        <img class="conq-selo-img" src="assets/inactive.png" alt="" onerror="this.outerHTML='🔒'">
         <span class="conq-selo-label">8 semanas seguidas</span>
       </div>
     </div>
     <!-- Banner -->
     <div class="conq-banner">
-      <img class="conq-banner-icon" src="https://www.figma.com/api/mcp/asset/1a393d53-0a4f-49c1-b3e9-e78baed3de96" alt="" onerror="this.outerHTML='💡'">
+      <img class="conq-banner-icon" src="assets/lampada.png" alt="" onerror="this.outerHTML='💡'">
       <p class="conq-banner-text">Registrar seus sentimentos ajuda você a se conhecer mais a cada dia. <strong>Continue!</strong></p>
     </div>
   </div>
@@ -1311,10 +1265,6 @@ buildN1();
      SCREEN HISTÓRICO
 ══════════════════════════════════════ -->
 <div class="screen" id="screen-historico">
-  <div class="status-bar">
-    <span class="status-time">11:28</span>
-    <div class="status-icons"><span class="status-icon">4G</span><span class="status-icon">🔋</span></div>
-  </div>
   <div class="nav-top">
     <button class="nav-top-menu" onclick="showScreen('screen-home')">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
