@@ -44,8 +44,9 @@ body {
 .n1-row { display: flex; gap: 12px; width: 100%; margin-bottom: 80px; }
 .n1-card {
   flex: 1; background: white; border-radius: 14px;
-  padding: 16px 16px 20px; position: relative; min-height: 164px;
+  padding: 20px 20px 24px; position: relative; min-height: 180px;
   display: flex; flex-direction: column; justify-content: space-between;
+  gap: 16px;
 }
 .n1-card::after {
   content: ''; position: absolute; inset: -3px; border-radius: 17px; border: 6px solid; pointer-events: none;
@@ -54,12 +55,18 @@ body {
 .n1-card.d::after  { border-color: #3B82F6; }
 .n1-card.a::after  { border-color: #22C55E; }
 .n1-card.ma::after { border-color: #EAB308; }
-.n1-card-top {
-  display: flex; align-items: center; gap: 8px;
+.n1-card-label {
+  font-size: 26px; font-weight: 600; color: #232831;
+  line-height: 1.2; letter-spacing: -0.3px;
 }
-.n1-card-emoji { width: 60px; height: 60px; object-fit: contain; flex-shrink: 0; }
-.n1-card-label { font-size: 15px; font-weight: 600; color: #232831; line-height: 1.3; }
-.n1-card-count { font-family: 'Parkinsans', sans-serif; font-weight: 700; font-size: 68px; line-height: 1; color: #111; }
+.n1-card-bottom {
+  display: flex; align-items: center; gap: 14px;
+}
+.n1-card-emoji { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
+.n1-card-count {
+  font-family: 'Parkinsans', sans-serif; font-weight: 700;
+  font-size: 72px; line-height: 1; color: #111;
+}
 /* WORD CLOUD */
 .wc-card {
   background: white; border-radius: 14px; width: 100%;
@@ -87,7 +94,7 @@ body {
   content: ''; position: absolute; inset: 0; border: 1px solid rgba(0,0,0,0.1);
   border-radius: 14px; pointer-events: none;
 }
-.stat-label { font-size: 18px; font-weight: 500; color: #626C80; }
+.stat-label { font-size: 32px; font-weight: 500; color: #626C80; line-height: 1.2; white-space: nowrap; }
 .stat-value { font-family: 'Parkinsans', sans-serif; font-size: 56px; font-weight: 400; color: #111; line-height: 1; }
 .stat-value.sm { font-size: 38px; }
 .bottom-cta {
@@ -142,32 +149,32 @@ body {
 
   <div class="n1-row">
     <div class="n1-card md">
-      <div class="n1-card-top">
+      <span class="n1-card-label">Muito desagradável</span>
+      <div class="n1-card-bottom">
         <img class="n1-card-emoji" src="assets/muito-desagradavel.png" alt="">
-        <span class="n1-card-label">Muito desagradável</span>
+        <div class="n1-card-count" id="cnt-md">0</div>
       </div>
-      <div class="n1-card-count" id="cnt-md">0</div>
     </div>
     <div class="n1-card d">
-      <div class="n1-card-top">
+      <span class="n1-card-label">Desagradável</span>
+      <div class="n1-card-bottom">
         <img class="n1-card-emoji" src="assets/desagradavel.png" alt="">
-        <span class="n1-card-label">Desagradável</span>
+        <div class="n1-card-count" id="cnt-d">0</div>
       </div>
-      <div class="n1-card-count" id="cnt-d">0</div>
     </div>
     <div class="n1-card a">
-      <div class="n1-card-top">
+      <span class="n1-card-label">Agradável</span>
+      <div class="n1-card-bottom">
         <img class="n1-card-emoji" src="assets/agradavel.png" alt="">
-        <span class="n1-card-label">Agradável</span>
+        <div class="n1-card-count" id="cnt-a">0</div>
       </div>
-      <div class="n1-card-count" id="cnt-a">0</div>
     </div>
     <div class="n1-card ma">
-      <div class="n1-card-top">
+      <span class="n1-card-label">Muito agradável</span>
+      <div class="n1-card-bottom">
         <img class="n1-card-emoji" src="assets/muito-agradavel.png" alt="">
-        <span class="n1-card-label">Muito agradável</span>
+        <div class="n1-card-count" id="cnt-ma">0</div>
       </div>
-      <div class="n1-card-count" id="cnt-ma">0</div>
     </div>
   </div>
 
