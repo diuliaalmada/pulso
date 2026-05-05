@@ -34,6 +34,12 @@
     color: var(--text-body);
   }
 
+  /* ── TV / TELAS GRANDES ──
+     A UI foi desenhada para mobile (~420px de largura base). Em TVs/telas
+     grandes, um script JS calcula dinamicamente o `zoom` para que o
+     conteúdo preencha a largura disponível, mantendo o design original
+     sem precisar reescrever cada regra. */
+
   /* ── SCREENS ── */
   .screen {
     position: absolute; inset: 0;
@@ -856,6 +862,32 @@
 </div>
 
 <script>
+// ── ZOOM ADAPTATIVO PARA TV / TELAS GRANDES ──────────────────────
+// A UI foi desenhada com largura base de ~420px (mobile). Este script
+// calcula um fator de zoom para fazer o conteúdo preencher a largura
+// real da tela, sem que precisemos reescrever o CSS.
+//
+// Como funciona: lê a largura da janela e divide por 420 (largura de
+// design). Se a tela for maior que 600px, aplica o zoom no <html>.
+// Em telas pequenas (mobile), não faz nada — fica no design original.
+(function adaptToScreen() {
+  const DESIGN_WIDTH = 420;
+  const TV_THRESHOLD = 600; // abaixo disso, considera mobile e não escala
+  function applyZoom() {
+    const w = window.innerWidth;
+    if (w < TV_THRESHOLD) {
+      document.documentElement.style.zoom = '';
+    } else {
+      // Calcula o fator para preencher 100% da largura
+      const factor = w / DESIGN_WIDTH;
+      document.documentElement.style.zoom = factor.toFixed(3);
+    }
+  }
+  applyZoom();
+  window.addEventListener('resize', applyZoom);
+  window.addEventListener('orientationchange', applyZoom);
+})();
+
 // ── EMOJI ASSETS (via Figma URLs, fallback to text) ───────────────
 const EMOJI_IMGS = {
   'muito-desagradavel': 'assets/muito-desagradavel.png', // 🔴
