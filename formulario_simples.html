@@ -34,6 +34,12 @@
     color: var(--text-body);
   }
 
+  /* ── TABLET / TELAS GRANDES ──
+     A UI foi desenhada para mobile (~420px de largura base). Em tablets
+     e telas maiores, um script JS calcula dinamicamente o `zoom` para
+     que o conteúdo preencha a largura disponível, mantendo o design
+     original sem precisar reescrever cada regra. */
+
   /* ── SCREENS ── */
   .screen {
     position: absolute; inset: 0;
@@ -329,12 +335,26 @@
     width: 240px; height: 240px;
     flex-shrink: 0;
   }
-  .home-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+  .home-photos img {
+    position: absolute;
+    border-radius: 4.8px;
+    object-fit: cover;
   }
+  .photo-back {
+    background: #fff;
+    border-radius: 7.2px;
+    box-shadow: 0 3.35px 3.35px rgba(0,0,0,0.25);
+    position: absolute;
+  }
+  /* photo03 — rotate -8deg, left */
+  .p03-back  { width: 139px; height: 208px; left: 15px; top: 32px; transform: rotate(-8deg); }
+  .p03-img   { width: 126px; height: 168px; left: 22px; top: 40px; transform: rotate(-8deg); }
+  /* photo02 — rotate +8.73deg, right */
+  .p02-back  { width: 139px; height: 208px; left: 95px; top: 19px; transform: rotate(8.73deg); }
+  .p02-img   { width: 126px; height: 168px; left: 105px; top: 28px; transform: rotate(8.73deg); }
+  /* photo01 — rotate -6.6deg, center front */
+  .p01-back  { width: 149px; height: 230px; left: 50px; top: 5px; transform: rotate(-6.6deg); }
+  .p01-img   { width: 136px; height: 180px; left: 58px; top: 14px; transform: rotate(-6.6deg); }
 
   /* Title area */
   .home-title-wrap {
@@ -382,7 +402,12 @@
   <div class="home-body">
     <!-- Photos stack -->
     <div class="home-photos">
-      <img class="home-image" src="assets/home_image.png" alt="">
+      <div class="photo-back p03-back"></div>
+      <img class="p03-img" src="assets/image03.png" alt="">
+      <div class="photo-back p02-back"></div>
+      <img class="p02-img" src="assets/image02.png" alt="">
+      <div class="photo-back p01-back"></div>
+      <img class="p01-img" src="assets/image01.png" alt="">
     </div>
     <!-- Title -->
     <div class="home-title-wrap">
@@ -492,6 +517,32 @@
 </div>
 
 <script>
+// ── ZOOM ADAPTATIVO PARA TABLET / TELAS GRANDES ──────────────────
+// A UI foi desenhada com largura base de ~420px (mobile). Este script
+// calcula um fator de zoom para fazer o conteúdo preencher a largura
+// real da tela, sem que precisemos reescrever o CSS.
+//
+// Como funciona: lê a largura da janela e divide por 420 (largura de
+// design). Se a tela for maior que 600px, aplica o zoom no <html>.
+// Em telas pequenas (mobile), não faz nada — fica no design original.
+(function adaptToScreen() {
+  const DESIGN_WIDTH = 420;
+  const TABLET_THRESHOLD = 600; // abaixo disso, considera mobile e não escala
+  function applyZoom() {
+    const w = window.innerWidth;
+    if (w < TABLET_THRESHOLD) {
+      document.documentElement.style.zoom = '';
+    } else {
+      // Calcula o fator para preencher 100% da largura
+      const factor = w / DESIGN_WIDTH;
+      document.documentElement.style.zoom = factor.toFixed(3);
+    }
+  }
+  applyZoom();
+  window.addEventListener('resize', applyZoom);
+  window.addEventListener('orientationchange', applyZoom);
+})();
+
 // ── CONFIG ────────────────────────────────────────────────────────
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxhqVKFKAjl5BmdcCWAvuL1eN7P7ZftXvzdu5wFvwXjRh37qctO5k1PF1cdjOQfLYZj/exec';
 
