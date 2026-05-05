@@ -393,26 +393,12 @@
     width: 240px; height: 240px;
     flex-shrink: 0;
   }
-  .home-photos img {
-    position: absolute;
-    border-radius: 4.8px;
-    object-fit: cover;
+  .home-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
   }
-  .photo-back {
-    background: #fff;
-    border-radius: 7.2px;
-    box-shadow: 0 3.35px 3.35px rgba(0,0,0,0.25);
-    position: absolute;
-  }
-  /* photo03 — rotate -8deg, left */
-  .p03-back  { width: 139px; height: 208px; left: 15px; top: 32px; transform: rotate(-8deg); }
-  .p03-img   { width: 126px; height: 168px; left: 22px; top: 40px; transform: rotate(-8deg); }
-  /* photo02 — rotate +8.73deg, right */
-  .p02-back  { width: 139px; height: 208px; left: 95px; top: 19px; transform: rotate(8.73deg); }
-  .p02-img   { width: 126px; height: 168px; left: 105px; top: 28px; transform: rotate(8.73deg); }
-  /* photo01 — rotate -6.6deg, center front */
-  .p01-back  { width: 149px; height: 230px; left: 50px; top: 5px; transform: rotate(-6.6deg); }
-  .p01-img   { width: 136px; height: 180px; left: 58px; top: 14px; transform: rotate(-6.6deg); }
 
   /* Title area */
   .home-title-wrap {
@@ -776,12 +762,7 @@
     </div>
     <!-- Photos stack -->
     <div class="home-photos">
-      <div class="photo-back p03-back"></div>
-      <img class="p03-img" src="https://www.figma.com/api/mcp/asset/fcc2add4-92fc-4a73-9c68-d17fbaa282ab" alt="">
-      <div class="photo-back p02-back"></div>
-      <img class="p02-img" src="https://www.figma.com/api/mcp/asset/3f07d3e2-b102-47d4-bb9c-4fe7bad05e81" alt="">
-      <div class="photo-back p01-back"></div>
-      <img class="p01-img" src="https://www.figma.com/api/mcp/asset/97fea817-5d43-4eb6-a8df-de96336a31c0" alt="">
+      <img class="home-image" src="assets/home_image.png" alt="">
     </div>
     <!-- Title -->
     <div class="home-title-wrap">
@@ -877,10 +858,10 @@
 <script>
 // ── EMOJI ASSETS (via Figma URLs, fallback to text) ───────────────
 const EMOJI_IMGS = {
-  'muito-desagradavel': 'https://www.figma.com/api/mcp/asset/2cc79542-b0a8-4dd7-9a48-3ce83c02dbf6', // 🔴
-  'desagradavel':       'https://www.figma.com/api/mcp/asset/a3a26a76-00b2-41cc-8a69-45dbec55dc98', // 🔵
-  'agradavel':          'https://www.figma.com/api/mcp/asset/4317be83-d5b5-43b0-8583-68f12e532bf5', // 🟢
-  'muito-agradavel':    'https://www.figma.com/api/mcp/asset/585b6d36-51cf-41f9-ba03-8beb6461d167', // 🟡
+  'muito-desagradavel': 'assets/muito-desagradavel.png', // 🔴
+  'desagradavel':       'assets/desagradavel.png',       // 🔵
+  'agradavel':          'assets/agradavel.png',          // 🟢
+  'muito-agradavel':    'assets/muito-agradavel.png',    // 🟡
 };
 
 // ── DATA ──────────────────────────────────────────────────────────
@@ -1287,22 +1268,22 @@ buildN1();
     <!-- Highlights -->
     <div class="hist-highlights">
       <div class="hist-emotion-card">
-        <img class="hist-emotion-emoji" src="https://www.figma.com/api/mcp/asset/021c8fe3-8925-4278-afff-b468aa3d4baa" alt="">
+        <img class="hist-emotion-emoji" src="assets/muito-agradavel.png" alt="">
         <span class="hist-emotion-count">2</span>
         <span class="hist-emotion-label">Muito agradável</span>
       </div>
       <div class="hist-emotion-card">
-        <img class="hist-emotion-emoji" src="https://www.figma.com/api/mcp/asset/64e4c300-9819-4752-983b-f611b51bc781" alt="">
+        <img class="hist-emotion-emoji" src="assets/agradavel.png" alt="">
         <span class="hist-emotion-count">2</span>
         <span class="hist-emotion-label">Agradável</span>
       </div>
       <div class="hist-emotion-card">
-        <img class="hist-emotion-emoji" src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="">
+        <img class="hist-emotion-emoji" src="assets/desagradavel.png" alt="">
         <span class="hist-emotion-count">4</span>
         <span class="hist-emotion-label">Desagradável</span>
       </div>
       <div class="hist-emotion-card">
-        <img class="hist-emotion-emoji" src="https://www.figma.com/api/mcp/asset/e84abe10-e39e-46c4-aa9f-eb33f428016d" alt="">
+        <img class="hist-emotion-emoji" src="assets/muito-desagradavel.png" alt="">
         <span class="hist-emotion-count">2</span>
         <span class="hist-emotion-label">Muito desagradável</span>
       </div>
@@ -1317,7 +1298,7 @@ buildN1();
           <button>→</button>
         </div>
       </div>
-      <div class="cal-grid"><div class="cal-cell header">Dom</div><div class="cal-cell header">Seg</div><div class="cal-cell header">Ter</div><div class="cal-cell header">Qua</div><div class="cal-cell header">Qui</div><div class="cal-cell header">Sex</div><div class="cal-cell header">Sáb</div><div class="cal-cell other-month">29</div><div class="cal-cell other-month">30</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">02</div><div class="cal-cell">03</div><div class="cal-cell">04</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">06</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">08</div><div class="cal-cell">09</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/021c8fe3-8925-4278-afff-b468aa3d4baa" alt="" onerror="this.style.display='none'"></div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/64e4c300-9819-4752-983b-f611b51bc781" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div><div class="cal-cell">15</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/64e4c300-9819-4752-983b-f611b51bc781" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/e84abe10-e39e-46c4-aa9f-eb33f428016d" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">21</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">23</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/021c8fe3-8925-4278-afff-b468aa3d4baa" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">25</div><div class="cal-cell">26</div><div class="cal-cell">27</div><div class="cal-cell">28</div><div class="cal-cell">29</div><div class="cal-cell"><img src="https://www.figma.com/api/mcp/asset/e84abe10-e39e-46c4-aa9f-eb33f428016d" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">31</div><div class="cal-cell other-month">1</div><div class="cal-cell other-month">2</div></div>
+      <div class="cal-grid"><div class="cal-cell header">Dom</div><div class="cal-cell header">Seg</div><div class="cal-cell header">Ter</div><div class="cal-cell header">Qua</div><div class="cal-cell header">Qui</div><div class="cal-cell header">Sex</div><div class="cal-cell header">Sáb</div><div class="cal-cell other-month">29</div><div class="cal-cell other-month">30</div><div class="cal-cell"><img src="assets/desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">02</div><div class="cal-cell">03</div><div class="cal-cell">04</div><div class="cal-cell"><img src="assets/desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">06</div><div class="cal-cell"><img src="assets/desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">08</div><div class="cal-cell">09</div><div class="cal-cell"><img src="assets/muito-agradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell"><img src="assets/agradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div><div class="cal-cell">15</div><div class="cal-cell"><img src="assets/agradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div><div class="cal-cell"><img src="assets/muito-desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">21</div><div class="cal-cell"><img src="assets/desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">23</div><div class="cal-cell"><img src="assets/muito-agradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">25</div><div class="cal-cell">26</div><div class="cal-cell">27</div><div class="cal-cell">28</div><div class="cal-cell">29</div><div class="cal-cell"><img src="assets/muito-desagradavel.png" alt="" onerror="this.style.display='none'"></div><div class="cal-cell">31</div><div class="cal-cell other-month">1</div><div class="cal-cell other-month">2</div></div>
     </div>
     <div class="hist-divider"></div>
     <!-- Últimos Pulsos -->
@@ -1333,7 +1314,7 @@ buildN1();
         <span class="hist-log-date">Hoje</span>
         <div class="hist-log-emotion-row">
           <span class="hist-log-name">Fúria</span>
-          <img class="hist-log-emoji" src="https://www.figma.com/api/mcp/asset/e84abe10-e39e-46c4-aa9f-eb33f428016d" alt="">
+          <img class="hist-log-emoji" src="assets/muito-desagradavel.png" alt="">
           <svg class="hist-log-alert" viewBox="0 0 16 16" fill="none" stroke="#F59E0B" stroke-width="1.5">
             <path d="M8 2L14.5 13H1.5L8 2z" stroke-linejoin="round"/>
             <path d="M8 6v3M8 11v.5" stroke-linecap="round"/>
@@ -1345,7 +1326,7 @@ buildN1();
         <span class="hist-log-date">Ontem</span>
         <div class="hist-log-emotion-row">
           <span class="hist-log-name">Confiança</span>
-          <img class="hist-log-emoji" src="https://www.figma.com/api/mcp/asset/64e4c300-9819-4752-983b-f611b51bc781" alt="">
+          <img class="hist-log-emoji" src="assets/agradavel.png" alt="">
         </div>
         <p class="hist-log-text">Consegui fazer as tarefas da escola sem pressa, ajudei minha mãe em casa e ainda sobrou tempo pra jogar Brawl Stars.</p>
       </div>
@@ -1353,7 +1334,7 @@ buildN1();
         <span class="hist-log-date">Quarta-feira, 2 de maio de 2025</span>
         <div class="hist-log-emotion-row">
           <span class="hist-log-name">Motivação</span>
-          <img class="hist-log-emoji" src="https://www.figma.com/api/mcp/asset/021c8fe3-8925-4278-afff-b468aa3d4baa" alt="">
+          <img class="hist-log-emoji" src="assets/muito-agradavel.png" alt="">
         </div>
         <p class="hist-log-text">Meu grupo arrasou! Estamos classificados para a última fase do DesafiEI.</p>
       </div>
@@ -1361,7 +1342,7 @@ buildN1();
         <span class="hist-log-date">Terça-feira, 2 de maio de 2025</span>
         <div class="hist-log-emotion-row">
           <span class="hist-log-name">Vergonha</span>
-          <img class="hist-log-emoji" src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="">
+          <img class="hist-log-emoji" src="assets/desagradavel.png" alt="">
         </div>
         <p class="hist-log-text">Tomei um tombo na aula de Ed. Física.</p>
       </div>
@@ -1369,7 +1350,7 @@ buildN1();
         <span class="hist-log-date">Segunda-feira, 1º de maio de 2025</span>
         <div class="hist-log-emotion-row">
           <span class="hist-log-name">Tédio</span>
-          <img class="hist-log-emoji" src="https://www.figma.com/api/mcp/asset/f0108d08-2c34-4715-a236-ed7e899749c9" alt="">
+          <img class="hist-log-emoji" src="assets/desagradavel.png" alt="">
         </div>
         <p class="hist-log-text">Meus pais viajaram e passei o finde todo sozinho cuidando do meu irmão. Ele é chato.</p>
       </div>
