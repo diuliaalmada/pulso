@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <title>Reserva de ativação Pulso</title>
+  <style>
+    :root {
+      --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #6b7280; --border: #e3e6eb;
+      --primary: #3b5bdb; --primary-soft: #e7ecff; --busy: #fde8e8; --busy-text: #b42318;
+      --ok-bg: #e7f6ec; --ok-text: #1a7f37;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 480px; margin: 32px auto; padding: 0 16px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .hint { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .cal-head strong { text-transform: capitalize; }
+    .nav { border: 1px solid var(--border); background: #fff; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; }
+    .nav:disabled { opacity: .4; cursor: default; }
+    .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .dow { text-align: center; font-size: 12px; color: var(--muted); padding: 4px 0; }
+    .day { aspect-ratio: 1; border: 1px solid transparent; border-radius: 8px; background: none; font: inherit; cursor: pointer; }
+    .day.free:hover { background: var(--primary-soft); }
+    .day.in-range { background: var(--primary-soft); }
+    .day.selected, .day.selected:hover { background: var(--primary); color: #fff; }
+    .day.busy { background: var(--busy); color: var(--busy-text); text-decoration: line-through; }
+    .day.past, .day.blank { color: #c4c8cf; cursor: default; }
+    .day.today { border-color: var(--primary); }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 10px; }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+    .clear { border: 0; background: none; color: var(--primary); font: inherit; font-size: 13px; cursor: pointer; padding: 0; margin-top: 8px; }
+    label { display: block; font-weight: 600; margin: 12px 0 4px; font-size: 14px; }
+    input, textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; font: inherit; }
+    textarea { resize: vertical; min-height: 70px; }
+    button.submit { margin-top: 16px; width: 100%; padding: 11px; border: 0; border-radius: 8px; background: var(--primary); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+    button.submit:disabled { opacity: .5; cursor: default; }
+    .msg { border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+    .msg.busy { background: var(--busy); color: var(--busy-text); }
+    .msg.ok { background: var(--ok-bg); color: var(--ok-text); }
+    .msg.err { background: #fff4e5; color: #8a4b00; }
+    .msg a { color: inherit; font-weight: 600; }
+    .hidden { display: none; }
+    .loading { color: var(--muted); text-align: center; padding: 24px 0; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Reserva de ativação Pulso</h1>
+  <p class="sub">Para utilizar a ativação do Pulso em escolas ou eventos, faça o preenchimento dos campos abaixo e verifique as datas disponíveis</p>
+
+  <div id="message" class="msg hidden" role="status"></div>
+
+  <div class="card">
+    <p class="hint">Clique no primeiro dia e depois no último dia do período. Para um único dia, clique duas vezes no mesmo dia.</p>
+    <div id="loading" class="loading">Carregando datas…</div>
+    <div id="calendar" class="hidden">
+      <div class="cal-head">
+        <button class="nav" id="prev" aria-label="Mês anterior">‹</button>
+        <strong id="monthLabel"></strong>
+        <button class="nav" id="next" aria-label="Próximo mês">›</button>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="legend">
+        <span><i style="background:var(--primary)"></i>Início/fim</span>
+        <span><i style="background:var(--primary-soft)"></i>Período</span>
+        <span><i style="background:var(--busy)"></i>Reservado</span>
+      </div>
+      <button type="button" class="clear hidden" id="clear">Limpar seleção</button>
+    </div>
+  </div>
+
+  <form id="form" class="card">
+    <label>Período escolhido</label>
+    <input id="dateDisplay" readonly placeholder="Selecione no calendário">
+    <label for="name">Nome</label>
+    <input id="name" required autocomplete="name">
+    <label for="email">E-mail</label>
+    <input id="email" type="email" required autocomplete="email">
+    <label for="reason">Motivo do uso (opcional)</label>
+    <textarea id="reason"></textarea>
+    <button class="submit" id="submit" type="submit" disabled>Reservar</button>
+  </form>
+</main>
+
+<script>
+  const state = { reserved: new Set(), today: '', start: null, end: null, view: null, contactName: '', contactUrl: '' };
+  const $ = id => document.getElementById(id);
+
+  // Ponte para o Apps Script; fora dele (preview local) usa dados de exemplo.
+  function callServer(fn, arg) {
+    return new Promise((resolve, reject) => {
+      if (window.google && google.script && google.script.run) {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](arg);
+      } else {
+        resolve(mockServer(fn, arg));
+      }
+    });
+  }
+  function mockServer(fn, arg) {
+    const t = new Date();
+    const plus = n => { const d = new Date(t.getFullYear(), t.getMonth(), t.getDate() + n); return toIso(d.getFullYear(), d.getMonth(), d.getDate()); };
+    window._mock = window._mock || [plus(2), plus(5), plus(9)];
+    if (fn === 'getInitialData') return { reservedDates: window._mock, userEmail: '', today: plus(0),
+      slackContactName: 'Diulia Almada', slackContactUrl: 'https://slack.com/app_redirect?channel=U08LXDV6EV9' };
+    if (fn === 'createReservation') {
+      const days = rangeDays(arg.start, arg.end);
+      const conflicts = days.filter(d => window._mock.includes(d));
+      if (conflicts.length) return { ok: false, conflict: true, conflicts, reservedDates: window._mock };
+      window._mock = window._mock.concat(days); return { ok: true, reservedDates: window._mock };
+    }
+  }
+
+  const pad = n => String(n).padStart(2, '0');
+  const toIso = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`;
+  const toBr = iso => iso.split('-').reverse().join('/');
+
+  /** Dias de a até b (inclusive), em yyyy-MM-dd. */
+  function rangeDays(a, b) {
+    const out = [];
+    const [y, m, d] = a.split('-').map(Number);
+    for (let i = 0; ; i++) {
+      const dt = new Date(y, m - 1, d + i);
+      const iso = toIso(dt.getFullYear(), dt.getMonth(), dt.getDate());
+      if (iso > b) break;
+      out.push(iso);
+    }
+    return out;
+  }
+
+  function periodLabel(a, b) {
+    return a === b ? toBr(a) : `${toBr(a)} a ${toBr(b)}`;
+  }
+
+  function showMessage(kind, html) {
+    const el = $('message');
+    el.className = `msg ${kind}`;
+    el.innerHTML = html;
+  }
+  function hideMessage() { $('message').className = 'msg hidden'; }
+
+  function busyMessage(dates) {
+    const list = dates.map(toBr).join(', ');
+    const label = dates.length > 1 ? `Os dias <strong>${list}</strong> já estão reservados` : `O dia <strong>${list}</strong> já está reservado`;
+    showMessage('busy', `${label}. Se precisar dessa data, envie uma mensagem para ` +
+      `<a href="${state.contactUrl}" target="_blank" rel="noopener">${state.contactName} no Slack</a>.`);
+  }
+
+  function render() {
+    const { y, m } = state.view;
+    $('monthLabel').textContent = new Date(y, m, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    const [ty, tm] = state.today.split('-').map(Number);
+    $('prev').disabled = y < ty || (y === ty && m <= tm - 1);
+
+    const grid = $('grid');
+    grid.innerHTML = '';
+    ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].forEach(d => {
+      const el = document.createElement('div'); el.className = 'dow'; el.textContent = d; grid.appendChild(el);
+    });
+    const first = new Date(y, m, 1).getDay();
+    const days = new Date(y, m + 1, 0).getDate();
+    for (let i = 0; i < first; i++) {
+      const el = document.createElement('span'); el.className = 'day blank'; grid.appendChild(el);
+    }
+    const end = state.end || state.start;
+    for (let d = 1; d <= days; d++) {
+      const iso = toIso(y, m, d);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = d;
+      btn.className = 'day';
+      if (iso === state.today) btn.classList.add('today');
+      if (iso < state.today) {
+        btn.classList.add('past'); btn.disabled = true;
+      } else if (state.reserved.has(iso)) {
+        btn.classList.add('busy');
+        btn.setAttribute('aria-label', `${toBr(iso)} reservado`);
+        btn.onclick = () => busyMessage([iso]);
+      } else {
+        btn.classList.add('free');
+        if (iso === state.start || iso === state.end) btn.classList.add('selected');
+        else if (state.start && iso > state.start && iso < end) btn.classList.add('in-range');
+        btn.onclick = () => pick(iso);
+      }
+      grid.appendChild(btn);
+    }
+  }
+
+  /** 1º clique define o início; 2º clique define o fim (o período não pode conter dias reservados). */
+  function pick(iso) {
+    hideMessage();
+    if (!state.start || state.end || iso < state.start) {
+      state.start = iso; state.end = null;
+    } else {
+      const conflicts = rangeDays(state.start, iso).filter(d => state.reserved.has(d));
+      if (conflicts.length) { busyMessage(conflicts); return; }
+      state.end = iso;
+    }
+    updateSelection();
+  }
+
+  function updateSelection() {
+    const s = state.start, e = state.end;
+    $('dateDisplay').value = !s ? '' : e ? periodLabel(s, e) : `${toBr(s)} (clique no último dia ou reserve só este dia)`;
+    $('submit').disabled = !s;
+    $('clear').classList.toggle('hidden', !s);
+    render();
+  }
+
+  function clearSelection() { state.start = state.end = null; updateSelection(); }
+
+  function setReserved(list) {
+    state.reserved = new Set(list);
+    if (state.start && rangeDays(state.start, state.end || state.start).some(d => state.reserved.has(d))) {
+      state.start = state.end = null;
+    }
+  }
+
+  $('prev').onclick = () => { const v = state.view; state.view = v.m === 0 ? { y: v.y - 1, m: 11 } : { y: v.y, m: v.m - 1 }; render(); };
+  $('next').onclick = () => { const v = state.view; state.view = v.m === 11 ? { y: v.y + 1, m: 0 } : { y: v.y, m: v.m + 1 }; render(); };
+  $('clear').onclick = () => { hideMessage(); clearSelection(); };
+
+  $('form').onsubmit = async e => {
+    e.preventDefault();
+    if (!state.start) return;
+    const start = state.start, end = state.end || state.start;
+    $('submit').disabled = true;
+    $('submit').textContent = 'Reservando…';
+    try {
+      const res = await callServer('createReservation', {
+        start, end, name: $('name').value, email: $('email').value, reason: $('reason').value,
+      });
+      setReserved(res.reservedDates);
+      if (res.ok) {
+        showMessage('ok', `Reserva confirmada para <strong>${periodLabel(start, end)}</strong>.`);
+        state.start = state.end = null; $('reason').value = '';
+      } else if (res.conflict) {
+        busyMessage(res.conflicts);
+      }
+    } catch (err) {
+      showMessage('err', `Não foi possível reservar: ${err.message || err}`);
+    } finally {
+      $('submit').textContent = 'Reservar';
+      updateSelection();
+    }
+  };
+
+  callServer('getInitialData').then(data => {
+    state.today = data.today;
+    state.contactName = data.slackContactName;
+    state.contactUrl = data.slackContactUrl;
+    setReserved(data.reservedDates);
+    if (data.userEmail) $('email').value = data.userEmail;
+    const [y, m] = data.today.split('-').map(Number);
+    state.view = { y, m: m - 1 };
+    $('loading').classList.add('hidden');
+    $('calendar').classList.remove('hidden');
+    render();
+  }).catch(err => {
+    $('loading').textContent = `Erro ao carregar a planilha: ${err.message || err}`;
+  });
+</script>
+</body>
+</html>
